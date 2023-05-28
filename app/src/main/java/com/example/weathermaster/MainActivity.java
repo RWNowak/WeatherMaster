@@ -3,11 +3,18 @@ package com.example.weathermaster;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.DecimalFormat;
+
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 
 public class MainActivity extends AppCompatActivity {
     EditText etCity, etCountry;
@@ -37,5 +44,17 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 tempUrl = url + "?q=" + city + "&appid=" + appid;
             }
-    }
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, tempUrl, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    Log.d("response", response);
+                }
+            }, new Response.ErrorListener(){
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(getApplicationContext(), error.toString().trim(),Toast.LENGTH_SHORT).show();
+                }
+            });
+    }   }
 }
